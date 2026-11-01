@@ -11,7 +11,8 @@ A collection of agent skills.
 ```
 
 The agent reads the project's `AGENTS.md` first if one exists, batches its
-reads, posts a one-shot plan to the user, and only then starts editing. It does
+file reads and quick shell lookups, posts a one-shot plan to the user, and only
+then starts editing. It does
 not wait for subagents or slow commands, does not write or run tests, and does
 not perform other bug checks. Unverified work is appended to the project's
 `AGENTS.md` under `## TODO - Bug checks`.

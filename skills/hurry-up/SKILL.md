@@ -27,6 +27,7 @@ If an `AGENTS.md` exists in the working directory or any parent of it, read it b
 
 - Do not explore the repository broadly. Locate the relevant files with targeted searches.
 - Read every file you need in one parallel batch. Do not read files one at a time.
+- Batch fast shell reads too. Combine `ls`, `grep`, `cat`, and similar lookups into one command instead of running them one at a time. Keep this to quick reads; slow commands follow rule 3.
 - Write a short numbered plan: one line per step, no alternatives, no design rationale.
 - Post the plan to the user in a message before starting any edit.
 - Start editing immediately after posting the plan. Do not re-plan unless a blocker appears.
