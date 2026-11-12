@@ -27,7 +27,8 @@ If an `AGENTS.md` exists in the working directory or any parent of it, read it b
 
 - Do not explore the repository broadly. Locate the relevant files with targeted searches.
 - Read every file you need in one parallel batch. Do not read files one at a time.
-- Batch fast shell reads too. Combine `ls`, `grep`, `cat`, and similar lookups into one command instead of running them one at a time. Keep this to quick reads; slow commands follow rule 3.
+- Batch fast shell reads too. Combine `ls`, `grep`, and similar lookups into one command instead of running them one at a time. Keep this to quick reads; slow commands follow rule 3.
+- Never use `python3`, `sed`, `awk`, `perl`, or shell redirection to inspect or modify files. Those bypass the observe-then-edit workflow and corrupt the edit baseline. Use the read tool to view files and the edit or write tool to change them. Keep the shell for commands that are not file reads or edits.
 - Write a short numbered plan: one line per step, no alternatives, no design rationale.
 - Post the plan to the user in a message before starting any edit.
 - Start editing immediately after posting the plan. Do not re-plan unless a blocker appears.
@@ -40,6 +41,8 @@ If an `AGENTS.md` exists in the working directory or any parent of it, read it b
 - If a subagent is unavoidable, start it in the background and continue with other work. Never block on its result. Check it at natural checkpoints and act on whatever is ready.
 - Never run a slow command in the foreground. This includes builds, installs, code generation, and large diffs.
 - If a slow command is needed, start it as a background process immediately, continue editing, and check its output at natural checkpoints. Do not sleep or poll in a loop.
+- Never wait for a background task by sleeping and then re-reading its log. `sleep` plus a log check is a poll loop, even when used once.
+- When no other work remains and only a background task is left, stop and end the turn. Do not sleep, poll, or busy-wait. The harness resumes the run when the background task completes; continue then.
 - Never wait for a command just to confirm success. If it has not finished by the end, report it as still running.
 
 ### 4. Skip verification

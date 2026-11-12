@@ -12,10 +12,12 @@ A collection of agent skills.
 
 The agent reads the project's `AGENTS.md` first if one exists, batches its
 file reads and quick shell lookups, posts a one-shot plan to the user, and only
-then starts editing. It does
-not wait for subagents or slow commands, does not write or run tests, and does
-not perform other bug checks. Unverified work is appended to the project's
-`AGENTS.md` under `## TODO - Bug checks`.
+then starts editing. It uses the read and edit tools for files instead of
+`python3` or `sed`, does not wait for subagents or slow commands, does not write
+or run tests, and does not perform other bug checks. It never sleeps to poll a
+background task's log: when only that task is left, the run stops and resumes on
+completion. Unverified work is appended to the project's `AGENTS.md` under
+`## TODO - Bug checks`.
 
 Before a large change, the agent must explain why the work will take a while
 and ask for confirmation.
