@@ -19,8 +19,19 @@ background task's log: when only that task is left, the run stops and resumes on
 completion. Unverified work is appended to the project's `AGENTS.md` under
 `## TODO - Bug checks`.
 
-Before a large change, the agent must explain why the work will take a while
-and ask for confirmation.
+Before editing, the agent runs its plan through Occam's razor: it cuts any
+entity the requirement does not need, keeps visibility minimal, avoids new
+dependencies, and changes as little as possible (refactoring excepted). If the
+trimmed plan still needs a method or class that does not exist yet, the agent
+asks the user first.
+
+The agent then checks the plan for changes outside the feature's scope: touching
+shared code such as a base class used by other features, deleting or rewriting
+methods outside scope, adding members to outside base classes, introducing a new
+dependency between modules or parts, or adding new classes, files, or modules.
+When any of these apply, it lists every planned modification down to the class
+and member level and waits for confirmation. A small feature that breaks no
+compatibility and adds no new methods proceeds right after the plan.
 
 ### Install
 

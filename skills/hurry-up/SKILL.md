@@ -30,8 +30,11 @@ If an `AGENTS.md` exists in the working directory or any parent of it, read it b
 - Batch fast shell reads too. Combine `ls`, `grep`, and similar lookups into one command instead of running them one at a time. Keep this to quick reads; slow commands follow rule 3.
 - Never use `python3`, `sed`, `awk`, `perl`, or shell redirection to inspect or modify files. Those bypass the observe-then-edit workflow and corrupt the edit baseline. Use the read tool to view files and the edit or write tool to change them. Keep the shell for commands that are not file reads or edits.
 - Write a short numbered plan: one line per step, no alternatives, no design rationale.
-- Post the plan to the user in a message before starting any edit.
-- Start editing immediately after posting the plan. Do not re-plan unless a blocker appears.
+- Before posting the plan, review it once with Occam's razor: cut every class, method, member, file, abstraction, indirection, and dependency the requirement does not need. Post the trimmed plan, not the first draft.
+- Keep the change as small as the requirement allows; refactoring is the only exception. Keep visibility minimal, avoid dependencies that did not exist before, and keep the design extensible.
+- If the trimmed plan still needs a method or class that does not exist yet, ask the user before editing.
+- Post the final plan to the user in a message before starting any edit.
+- Before editing, check the plan against rule 6. If a confirmation trigger applies, wait for confirmation; otherwise start editing immediately after posting the plan. Do not re-plan unless a blocker appears.
 - Choose the first reasonable approach. Do not compare options, estimate effort, or analyze edge cases beyond what the requirement states.
 - Ask a question only when the requirement is ambiguous enough that guessing would cause rework. Otherwise pick the obvious reading and proceed.
 
@@ -65,16 +68,27 @@ If an `AGENTS.md` governs the files you changed, record every unverified area an
 - If no `AGENTS.md` exists, do not create one. List the gaps in the final report instead.
 - If several `AGENTS.md` files apply, use the nearest one that governs the changed files.
 
-### 6. Stop before large changes
+### 6. Confirm scope-crossing and new-surface changes
 
-Large changes take a long time. Before starting one, tell the user and wait for confirmation.
+Before editing, check the plan against these triggers. If any trigger applies, describe every change in detail and wait for the user's confirmation.
 
-Treat a change as large when it touches more than about ten files, crosses module or service boundaries, changes an architecture, database schema, or public API, or needs a multi-stage migration.
+A trigger applies when the plan:
 
-- After the batched read, state why it will take long and give a rough scope.
-- Ask for confirmation in one short message.
+- Edits code outside the feature's scope. This includes code the feature depends on that other features also use, such as a shared base class.
+- Deletes any method outside the feature's scope.
+- Changes the implementation of a base class method outside the feature's scope.
+- Adds a method or member to a base class outside the feature's scope.
+- Introduces a new dependency: a new import between modules, a new library, package, or service, or new coupling between otherwise independent parts.
+- Introduces any method or class that does not exist yet and survives the Occam pass in rule 2.
+- Adds a new file or module.
+
+When a trigger applies:
+
+- List every modification: file path, class name, member or method name, and what changes in it.
+- Keep the list concrete enough to review without opening the code.
 - Do not start editing until the user confirms.
-- Small and medium edits need no confirmation.
+
+Otherwise the change is a small feature: post the plan and continue immediately. A feature is small when it needs no compatibility break and introduces no new methods.
 
 ### 7. Do not trade quality for speed
 
